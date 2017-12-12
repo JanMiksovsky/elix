@@ -115,28 +115,18 @@ export default class ListBox extends Base {
           min-height: inherit;
         }
       </style>
-      <div id="content" role="none">
+      <div id="content" role="none" style="{{contentStyle}}">
         <slot></slot>
       </div>
     `;
   }
 
   get updates() {
-    const style = this.state.orientation === 'vertical' ?
-      {
-        'flex-direction': 'column',
-        'overflow-x': 'hidden',
-        'overflow-y': 'scroll'
-      } :
-      {
-        'flex-direction': 'row',
-        'overflow-x': 'scroll',
-        'overflow-y': 'hidden'
-      };
+    const contentStyle = this.state.orientation === 'vertical' ?
+      'flex-direction: column; overflow-x: hidden; overflow-y: scroll;' :
+      'flex-direction: row; overflow-x: scroll; overflow-y: hidden;';
     return merge(super.updates, {
-      $: {
-        content: { style }
-      }
+      contentStyle
     });
   }
 

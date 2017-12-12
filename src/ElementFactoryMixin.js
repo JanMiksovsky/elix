@@ -1,5 +1,7 @@
 import symbols from './symbols.js';
 import ElementFactory from '../node_modules/template-instantiation/src/ElementFactory.js';
+import { UpdaterDescriptor, NodeUpdater } from '../node_modules/template-instantiation/src/updaters';
+import { apply } from './updates.js';
 
 
 // A cache of processed templates.
@@ -11,6 +13,16 @@ import ElementFactory from '../node_modules/template-instantiation/src/ElementFa
 //
 const mapTagToFactory = {};
 
+
+class PropertiesUpdater extends NodeUpdater {
+  update(data) {
+    const { attributes, classes, style } = data;
+    const properties = { attributes, classes, style };
+    apply(this.node, properties);
+  }
+}
+
+
 /**
  * Mixin which adds stamping a template into a Shadow DOM subtree upon component
  * instantiation.
@@ -18,7 +30,7 @@ const mapTagToFactory = {};
  * To use this mixin, define a `template` method that returns a string or HTML
  * `<template>` element:
  *
- *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
+ *     class MyElement extends ElementFactoryMixin(HTMLElement) {
  *       [symbols.template]() {
  *         return `Hello, <em>world</em>.`;
  *       }
@@ -34,12 +46,12 @@ const mapTagToFactory = {};
  * element `<button id="foo">`, then this mixin will create a member
  * `this.$.foo` that points to that button.
  *
- * @module ShadowTemplateMixin
+ * @module ElementFactoryMixin
  */
-export default function ShadowTemplateMixin(Base) {
+export default function ElementFactoryMixin(Base) {
 
   // The class prototype added by the mixin.
-  class ShadowTemplate extends Base {
+  class ElementWithFactory extends Base {
 
     /*
      * If the component defines a template, a shadow root will be created on the
@@ -54,6 +66,8 @@ export default function ShadowTemplateMixin(Base) {
         const factory = getFactory(this);
         const { instance, updater } = factory.instantiate(this);
         root.appendChild(instance);
+        const hostUpdater = new PropertiesUpdater(this);
+        updater.updaters.push(hostUpdater);
         this.updater = updater;
         this.$ = shadowElementReferences(this);
       }
@@ -81,7 +95,7 @@ export default function ShadowTemplateMixin(Base) {
      */
   }
 
-  return ShadowTemplate;
+  return ElementWithFactory;
 }
 
 
@@ -98,7 +112,7 @@ function getFactory(component) {
     let template = component[symbols.template];
     if (!template) {
       /* eslint-disable no-console */
-      console.warn(`ElementFactoryMixin expects ${component.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
+      console.warn(`ElementFactoryMixin expects ${component.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ElementFactoryMixin.`);
       return;
     }
 

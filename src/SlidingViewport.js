@@ -75,7 +75,7 @@ class SlidingViewport extends Base {
           object-fit: contain;
         }
       </style>
-      <div id="slidingViewportContent" role="none">
+      <div id="slidingViewportContent" role="none" style="transform: {{viewportTransform}}; transition: {{viewportTransition}};">
         <slot></slot>
       </div>
     `;
@@ -95,19 +95,13 @@ class SlidingViewport extends Base {
     } else {
       translation = 0;
     }
-    const transition = swiping ?
+    const viewportTransition = swiping ?
       'none' :
       'transform 0.25s';
 
     return merge(super.updates, {
-      $: {
-        slidingViewportContent: {
-          style: {
-            'transform': `translateX(${translation}%)`,
-            transition
-          }
-        }
-      }
+      viewportTransform: `translateX(${translation}%)`,
+      viewportTransition
     });
   }
 }
