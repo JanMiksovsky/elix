@@ -23,7 +23,7 @@ class IncrementDecrement extends ElementBase {
   get [symbols.template]() {
     return `
       <button id="decrement">-</button>
-        <span style="color: {{color}}">{{value}}</span>
+        <span style="color: {{color}};">{{value}}</span>
       <button id="increment">+</button>
     `;
   }

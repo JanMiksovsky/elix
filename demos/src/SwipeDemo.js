@@ -1,4 +1,3 @@
-import { merge } from '../../src/updates.js';
 import ElementBase from '../../src/ElementBase.js';
 import symbols from '../../src/symbols.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
@@ -21,6 +20,7 @@ class SwipeDemo extends Base {
           display: flex;
           flex-direction: column;
           overflow-x: hidden;
+          touch-action: none;
         }
 
         .section {
@@ -59,8 +59,8 @@ class SwipeDemo extends Base {
         </div>
       </div>
       <div id="container" class="section">
-        <div id="swipeFraction"></div>
-        <div id="block"></div>
+        <div id="swipeFraction">{{formatted}}</div>
+        <div id="block" style="transform: {{transform}};"></div>
         <div>&nbsp;</div>
       </div>
       <div class="section"></div>
@@ -75,17 +75,9 @@ class SwipeDemo extends Base {
     const transform = swipeFraction !== null ?
       `translateX(${swipeFraction * 100}%)` :
       'none';
-    return merge(super.updates, {
-      $: {
-        block: {
-          style: {
-            transform
-          }
-        },
-        swipeFraction: {
-          textContent: formatted
-        }
-      }
+    return Object.assign({}, super.updates, {
+      transform,
+      formatted
     });
   }
 
