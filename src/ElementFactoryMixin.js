@@ -47,51 +47,17 @@ export default function ShadowTemplateMixin(Base) {
      */
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
-      if (this.shadowRoot) {
-        // Already rendered
-        // const updates = this.updates();
-        this.updater.update(this);
-        return;
+      const updates = this.updates;
+      if (!this.shadowRoot) {
+        // Stamp the template into a new shadow root.
+        const root = this.attachShadow({ mode: 'open' });
+        const factory = getFactory(this);
+        const { instance, updater } = factory.instantiate(this);
+        root.appendChild(instance);
+        this.updater = updater;
+        this.$ = shadowElementReferences(this);
       }
-      
-      const tag = this.localName;
-      let factory = tag && mapTagToFactory[tag];
-
-      // See if we've already processed a factory for this tag.
-      if (!factory) {
-        // This is the first time we've created an instance of this tag.
-
-        // Get the template and perform initial processing.
-        let template = this[symbols.template];
-        if (!template) {
-          /* eslint-disable no-console */
-          console.warn(`ElementFactoryMixin expects ${this.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
-          return;
-        }
-
-        if (typeof template === 'string') {
-          // Upgrade plain string to real template.
-          const templateText = template;
-          template = document.createElement('template');
-          template.innerHTML = templateText;
-        }
-
-        // Component template only needs to be parsed once.
-        factory = new ElementFactory(template);
-    
-        if (tag) {
-          // Store this for the next time we create the same type of element.
-          mapTagToFactory[tag] = factory;
-        }
-      }
-
-      // Stamp the template into a new shadow root.
-      const root = this.attachShadow({ mode: 'open' });
-      const { instance, updater } = factory.instantiate(this);
-      root.appendChild(instance);
-      this.updater = updater;
-
-      this.$ = shadowElementReferences(this);
+      this.updater.update(updates);
     }
   
     /**
@@ -116,6 +82,43 @@ export default function ShadowTemplateMixin(Base) {
   }
 
   return ShadowTemplate;
+}
+
+
+function getFactory(component) {
+
+  const tag = component.localName;
+  let factory = tag && mapTagToFactory[tag];
+
+  // See if we've already processed a factory for this tag.
+  if (!factory) {
+    // This is the first time we've created an instance of this tag.
+
+    // Get the template and perform initial processing.
+    let template = component[symbols.template];
+    if (!template) {
+      /* eslint-disable no-console */
+      console.warn(`ElementFactoryMixin expects ${component.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
+      return;
+    }
+
+    if (typeof template === 'string') {
+      // Upgrade plain string to real template.
+      const templateText = template;
+      template = document.createElement('template');
+      template.innerHTML = templateText;
+    }
+
+    // Component template only needs to be parsed once.
+    factory = new ElementFactory(template);
+
+    if (tag) {
+      // Store this for the next time we create the same type of element.
+      mapTagToFactory[tag] = factory;
+    }
+  }
+
+  return factory;
 }
 
 
