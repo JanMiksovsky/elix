@@ -170,8 +170,8 @@ class Tabs extends Base {
           position: relative;
         }
       </style>
-      <elix-tab-strip id="tabStrip"><slot id="tabButtonsSlot" name="tabButtons"></slot></elix-tab-strip>
-      <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;">
+      <elix-tab-strip id="tabStrip" properties="{{$.tabStrip}}"><slot id="tabButtonsSlot" name="tabButtons"></slot></elix-tab-strip>
+      <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;" properties="{{$.tabPanels}}">
         <slot></slot>
       </${tabPanelsTag}>
     `;

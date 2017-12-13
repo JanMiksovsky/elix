@@ -94,7 +94,7 @@ class TabButton extends Base {
           white-space: nowrap;
         }
       </style>
-      <button id="inner" tabindex="-1">
+      <button id="inner" tabindex="-1" properties="{{$.inner}}">
         <slot></slot>
       </button>
     `;

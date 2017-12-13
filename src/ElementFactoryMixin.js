@@ -71,7 +71,6 @@ export default function ElementFactoryMixin(Base) {
      */
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
-      const updates = this.updates;
       if (!this.shadowRoot) {
         // Stamp the template into a new shadow root.
         const root = this.attachShadow({ mode: 'open' });
@@ -83,6 +82,7 @@ export default function ElementFactoryMixin(Base) {
         this.updater = updater;
         this.$ = shadowElementReferences(this);
       }
+      const updates = this.updates;
       this.updater.update(updates);
     }
   
