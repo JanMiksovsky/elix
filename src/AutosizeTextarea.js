@@ -1,4 +1,4 @@
-import { merge } from './updates.js';
+import { merge, formatStyleProps } from './updates.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import symbols from './symbols.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
@@ -185,8 +185,8 @@ class AutosizeTextarea extends Base {
         }
       </style>
       <div id="autoSizeContainer">
-        <textarea id="inner"></textarea>
-        <div id="copyContainer"><span id="textCopy"></span><span id="extraSpace">&nbsp;</span></div>
+        <textarea id="inner" value="{{value}}"></textarea>
+        <div id="copyContainer" style="{{copyStyle}}"><span id="textCopy">{{value}}</span><span id="extraSpace">&nbsp;</span></div>
       </div>
       <div hidden>
         <slot></slot>
@@ -206,18 +206,22 @@ class AutosizeTextarea extends Base {
       });
     }
 
+    // return merge(super.updates, {
+    //   $: {
+    //     copyContainer: {
+    //       style: copyStyle
+    //     },
+    //     inner: {
+    //       value
+    //     },
+    //     textCopy: {
+    //       textContent: value
+    //     }
+    //   }
+    // });
     return merge(super.updates, {
-      $: {
-        copyContainer: {
-          style: copyStyle
-        },
-        inner: {
-          value
-        },
-        textCopy: {
-          textContent: value
-        }
-      }
+      copyStyle: formatStyleProps(copyStyle),
+      value
     });
   }
 

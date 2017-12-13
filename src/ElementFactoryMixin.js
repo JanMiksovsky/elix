@@ -26,6 +26,15 @@ class PropertiesUpdater extends NodeUpdater {
 }
 
 
+class HostUpdater extends PropertiesUpdater {
+  update(data) {
+    const { attributes, classes, style } = data;
+    const stripped = { attributes, classes, style };
+    super.update(stripped);
+  }
+}
+
+
 /**
  * Mixin which adds stamping a template into a Shadow DOM subtree upon component
  * instantiation.
@@ -69,7 +78,7 @@ export default function ElementFactoryMixin(Base) {
         const factory = getFactory(this);
         const { instance, updater } = factory.instantiate();
         root.appendChild(instance);
-        const hostUpdater = new PropertiesUpdater(this);
+        const hostUpdater = new HostUpdater(this);
         updater.updaters.push(hostUpdater);
         this.updater = updater;
         this.$ = shadowElementReferences(this);
