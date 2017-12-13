@@ -84,13 +84,16 @@ export default function ArrowDirectionMixin(Base) {
 
     wrapWithArrowDirection(template) {
       return `
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;"
+          properties="{{$.arrowDirection}}">
           <elix-arrow-direction-button
             aria-hidden="true"
             id="arrowButtonLeft"
             tabIndex="-1"
+            properties="{{$.arrowButtonLeft}}"
             >
-            <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+            <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+              properties="{{$.arrowIconLeft}}">
               <g>
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
               </g>
@@ -103,8 +106,10 @@ export default function ArrowDirectionMixin(Base) {
             aria-hidden="true"
             id="arrowButtonRight"
             tabIndex="-1"
+            properties="{{$.arrowButtonRight}}"
             >
-            <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+            <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+              properties="{{$.arrowIconRight}}">
               <g>
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
               </g>

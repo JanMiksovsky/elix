@@ -38,7 +38,7 @@ export function apply(element, props) {
     switch (key) {
 
       case '$':
-        applyReferencedElementProps(element, value);
+        // applyReferencedElementProps(element, value);
         break;
 
       case 'attributes':

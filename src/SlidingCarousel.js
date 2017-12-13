@@ -93,7 +93,7 @@ class SlidingCarousel extends Base {
       </style>
       ${this.wrapWithArrowDirection(
         this.wrapWithPageDots(`
-          <elix-sliding-viewport id="viewport">
+          <elix-sliding-viewport id="viewport" properties="{{$.viewport}}">
             <slot></slot>
           </elix-sliding-viewport>
         `)
