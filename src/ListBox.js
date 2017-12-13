@@ -125,7 +125,7 @@ export default class ListBox extends Base {
     const contentStyle = this.state.orientation === 'vertical' ?
       'flex-direction: column; overflow-x: hidden; overflow-y: scroll;' :
       'flex-direction: row; overflow-x: scroll; overflow-y: hidden;';
-    return merge(super.updates, {
+    return Object.assign({}, super.updates, {
       contentStyle
     });
   }
