@@ -126,11 +126,11 @@ class Drawer extends Base {
         }
       </style>
       ${this.wrapWithFocusCapture(`
-        <div id="content">
+        <div id="content" properties="{{$.content}}">
           <slot></slot>
         </div>
       `)}
-      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
+      <elix-modal-backdrop id="backdrop" properties="{{$.backdrop}}"></elix-modal-backdrop>
     `;
   }
 

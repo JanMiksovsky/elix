@@ -1,5 +1,6 @@
 import AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
 import ElementFactoryMixin from './ElementFactoryMixin.js';
+import OriginalAttributesMixin from './OriginalAttributesMixin.js';
 import ReactiveMixin from './ReactiveMixin.js';
 // import RenderUpdatesMixin from './RenderUpdatesMixin.js';
 // import ShadowTemplateMixin from './ShadowTemplateMixin.js';
@@ -31,10 +32,11 @@ import ReactiveMixin from './ReactiveMixin.js';
 const ElementBase =
   AttributeMarshallingMixin(
   ElementFactoryMixin(
+  OriginalAttributesMixin(
   ReactiveMixin(
   // RenderUpdatesMixin(
   // ShadowTemplateMixin(
     HTMLElement
-  )));
+  ))));
 
 export default ElementBase;

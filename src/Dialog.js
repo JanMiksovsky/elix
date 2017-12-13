@@ -62,7 +62,7 @@ class Dialog extends Base {
       </style>
       <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
       ${this.wrapWithFocusCapture(`
-        <div id="content">
+        <div id="content" properties="{{$.content}}">
           <slot></slot>
         </div>
       `)}
