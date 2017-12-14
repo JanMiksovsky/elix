@@ -2,14 +2,14 @@ import ElementBase from '../../src/ElementBase.js';
 import symbols from '../../src/symbols.js';
 
 
-class IncrementDecrement extends ElementBase {
+export default class IncrementDecrement extends ElementBase {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.decrement.addEventListener('click', () => {
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
+    this.shadowRoot.querySelector('#decrement').addEventListener('click', () => {
       this.value--;
     });
-    this.$.increment.addEventListener('click', () => {
+    this.shadowRoot.querySelector('#increment').addEventListener('click', () => {
       this.value++;
     });
   }
@@ -23,9 +23,15 @@ class IncrementDecrement extends ElementBase {
   get [symbols.template]() {
     return `
       <button id="decrement">-</button>
-        {{value}}
+        <span style="color: {{color}};">{{state.value}}</span>
       <button id="increment">+</button>
     `;
+  }
+
+  get updates() {
+    return Object.assign({}, super.updates, {
+      color: this.state.value < 0 ? 'red' : 'inherit'
+    });
   }
 
   get value() {

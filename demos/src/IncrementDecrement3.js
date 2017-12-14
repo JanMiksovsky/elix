@@ -23,9 +23,19 @@ export default class IncrementDecrement extends ElementBase {
   get [symbols.template]() {
     return `
       <button id="decrement">-</button>
-        {{state.value}}
+        <span properties="{{spanProperties}}">{{state.value}}</span>
       <button id="increment">+</button>
     `;
+  }
+
+  get updates() {
+    return Object.assign({}, super.updates, {
+      spanProperties: {
+        style: {
+          color: this.state.value < 0 ? 'red' : 'inherit'
+        }
+      }
+    });
   }
 
   get value() {
