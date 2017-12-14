@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Setting properties as an object</title>
+
+  <style>
+    .baz {
+      border: 1px solid gray;
+    }
+  </style>
+
+  <template id="template">
+    <div class="foo bar" properties="{{divProperties}}">
+      <greet-element properties="{{greetProperties}}"></greet-element>
+    </div>
+  </template>
+
+  <script type="module">
+    import ElementFactory from '../src/ElementFactory.js';
+    import GreetElement from './src/GreetElement.js';
+    
+    const template = document.querySelector('template');
+    const factory = new ElementFactory(template);
+    const { instance, updater } = factory.instantiate();
+    document.body.appendChild(instance);
+
+    const divProperties = {
+      attributes: {
+        role: 'main'
+      },
+      classList: {
+        bar: false,
+        baz: true
+      },
+      style: {
+        background: 'powderblue',
+        padding: '1em'
+      }
+    };
+
+    const greetProperties = {
+      name: 'world',
+      style: {
+        fontWeight: 'bold'
+      }
+    };
+
+    updater.update({ divProperties, greetProperties });
+    window.updater = updater;
+  </script>
+
+</head>
+
+<body></body>
+
+</html>

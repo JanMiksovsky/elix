@@ -1,7 +1,6 @@
+import ElementFactory from './ElementFactory.js';
+import { HostUpdater } from './updaters.js';
 import symbols from './symbols.js';
-import ElementFactory from '../node_modules/template-instantiation/src/ElementFactory.js';
-import { NodeUpdater, AttributeValueUpdater, UpdaterDescriptor } from '../node_modules/template-instantiation/src/updaters';
-import { apply } from './updates.js';
 
 
 // A cache of processed templates.
@@ -12,27 +11,6 @@ import { apply } from './updates.js';
 // tag names, which was a (perhaps theoretical) use case for Custom Elements.
 //
 const mapTagToFactory = {};
-
-
-class PropertiesUpdater extends NodeUpdater {
-  constructor(node, expression) {
-    super(node);
-    this.expression = expression;
-  }
-  update(data) {
-    const value = this.evaluate(this.expression, data);
-    apply(this.node, value);
-  }
-}
-
-
-class HostUpdater extends PropertiesUpdater {
-  update(data) {
-    const { attributes, classes, style } = data;
-    const stripped = { attributes, classes, style };
-    super.update(stripped);
-  }
-}
 
 
 /**
@@ -95,7 +73,9 @@ export default function ElementFactoryMixin(Base) {
      * @type {object}
      */
     get updates() {
-      return super.updates || {};
+      return Object.assign({}, super.updates, {
+        state: this.state
+      });
     }
 
     /**
@@ -137,7 +117,6 @@ function getFactory(component) {
 
     // Component template only needs to be parsed once.
     factory = new ElementFactory(template);
-    patchUpdaters(factory);
 
     if (tag) {
       // Store this for the next time we create the same type of element.
@@ -146,32 +125,6 @@ function getFactory(component) {
   }
 
   return factory;
-}
-
-
-// HACK: Upgrade updaters for any attribute called "properties".
-function patchUpdaters(factory) {
-  const patched = factory.updaterDescriptors.map(updaterDescriptor => {
-    if (updaterDescriptor.updaterClass.constructor === AttributeValueUpdater.constructor) {
-      const updaterArgs = updaterDescriptor.updaterArgs;
-      const attributeName = updaterArgs[0];
-      if (attributeName === 'properties') {
-        const tokens = updaterDescriptor.updaterArgs[1];
-        const expression = tokens[0] && tokens[0].expression;
-        if (expression) {
-          // Patch
-          return new UpdaterDescriptor(
-            updaterDescriptor.address,
-            PropertiesUpdater,
-            expression
-          );
-        }
-      }
-    }
-    // Leave as is
-    return updaterDescriptor;
-  });
-  factory.updaterDescriptors = patched;  
 }
 
 

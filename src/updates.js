@@ -50,6 +50,7 @@ export function apply(element, props) {
         break;
 
       case 'classes':
+      case 'classList':
         applyClasses(element, value);
         break;
 
@@ -165,13 +166,13 @@ export function applyClasses(element, classProps) {
 }
 
 
-function applyReferencedElementProps(element, referencedElementProps) {
-  for (const key in referencedElementProps) {
-    const props = referencedElementProps[key];
-    const referencedElement = element.$[key];
-    apply(referencedElement, props);
-  }
-}
+// function applyReferencedElementProps(element, referencedElementProps) {
+//   for (const key in referencedElementProps) {
+//     const props = referencedElementProps[key];
+//     const referencedElement = element.$[key];
+//     apply(referencedElement, props);
+//   }
+// }
 
 
 /**
