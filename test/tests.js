@@ -23,6 +23,7 @@ import './tests/ReactiveMixin.tests.js';
 import './tests/RenderUpdatesMixin.tests.js';
 import './tests/SelectionInViewMixin.tests.js';
 import './tests/ShadowTemplateMixin.tests.js';
+import './tests/SelectedIndexMixin.tests.js';
 import './tests/SingleSelectionMixin.tests.js';
 import './tests/SlotContentMixin.tests.js';
 import './tests/template.tests.js';
