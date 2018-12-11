@@ -295,8 +295,8 @@ class Explorer extends Base {
         }
       </style>
       <div id="explorerContainer" role="none">
-        <div id="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
-        <div id="stage" role="none"><slot></slot></div>
+        <div id="proxyList" part="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
+        <div id="stage" part="stage" role="none"><slot></slot></div>
       </div>
     `;
   }
@@ -393,6 +393,9 @@ function createDefaultProxies(items, proxyRole) {
   const proxies = items ?
     items.map(() => template.createElement(proxyRole)) :
     [];
+  proxies.forEach(proxy => {
+    proxy.setAttribute('part', 'proxy');
+  });
   // Make the array immutable to help update performance.
   Object.freeze(proxies);
   return proxies;

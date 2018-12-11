@@ -96,22 +96,28 @@ class TabButton extends Base {
       <style>
         :host {
           display: inline-flex;
-        }
-
-        #inner {
-          background: inherit;
           border-color: #ccc;
           border-style: solid;
           border-width: 1px;
-          color: inherit;
           flex: 1;
-          font-family: inherit;
-          font-size: inherit;
           margin: 0;
-          outline: none;
           padding: 0.5em 0.75em;
           transition: border-color 0.25s;
           white-space: nowrap;
+        }
+
+        #inner {
+          background: none;
+          border: none;
+          color: inherit;
+          font-family: inherit;
+          font-size: inherit;
+          font-style: inherit;
+          font-weight: inherit;
+          max-width: 100%;
+          min-width: 100%;
+          outline: none;
+          padding: 0;
         }
       </style>
       <button id="inner" tabindex="-1">
@@ -185,8 +191,8 @@ class TabButton extends Base {
     const buttonProps = {
       style: Object.assign(
         {
-          'background-color': original.style && original.style['background-color'] || 'white',
-          color
+          // 'background-color': original.style && original.style['background-color'] || 'white',
+          // color
         },
         positionStyle,
         borderStyle,
@@ -194,20 +200,21 @@ class TabButton extends Base {
       )
     };
 
-    return merge(base, {
-      attributes: {
-        tabindex: original.attributes.tabindex || this.state.tabindex
+    return merge(
+      base,
+      {
+        attributes: {
+          tabindex: original.attributes.tabindex || this.state.tabindex
+        },
+        style: {
+          'flex': stretch ? 1 : original.style.flex,
+          'margin-left': needsLeftSpacer ? '0.2em' : '',
+          'margin-right': needsRightSpacer ? '0.2em' : '',
+          'margin-top': needsTopSpacer ? '0.2em' : ''
+        }  
       },
-      style: {
-        'flex': stretch ? 1 : original.style.flex,
-        'margin-left': needsLeftSpacer ? '0.2em' : '',
-        'margin-right': needsRightSpacer ? '0.2em' : '',
-        'margin-top': needsTopSpacer ? '0.2em' : ''
-      },
-      $: {
-        inner: buttonProps
-      }
-    });
+      buttonProps
+    );
   }
 
 }

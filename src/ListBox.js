@@ -97,7 +97,7 @@ class ListBox extends Base {
   }
 
   get [symbols.scrollTarget]() {
-    return this.$.content;
+    return this.$.container;
   }
 
   get [symbols.template]() {
@@ -111,28 +111,28 @@ class ListBox extends Base {
           -webkit-tap-highlight-color: transparent;
         }
 
-        #content {
+        #container {
           display: flex;
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
-        #content > ::slotted(*) {
+        #container > ::slotted(*) {
           padding: 0.25em;
         }
 
         @media (pointer: coarse) {
-          #content > ::slotted(*) {
+          #container > ::slotted(*) {
             padding: 1em;
           }
         }
 
-        #content > ::slotted(option) {
+        #container > ::slotted(option) {
           font-weight: inherit;
           min-height: inherit;
         }
       </style>
-      <div id="content" role="none">
+      <div id="container" part="container" role="none">
         <slot></slot>
       </div>
     `;
@@ -152,7 +152,7 @@ class ListBox extends Base {
       };
     return merge(super.updates, {
       $: {
-        content: { style }
+        container: { style }
       }
     });
   }

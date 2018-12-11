@@ -84,7 +84,7 @@ class Button extends Base {
         }
       </style>
 
-      <button id="inner" tabindex="-1" role="none">
+      <button id="inner" part="inner" tabindex="-1" role="none">
         <slot></slot>
       </button>
     `;
