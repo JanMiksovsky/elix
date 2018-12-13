@@ -56,7 +56,8 @@
         padding: 0 33px;
       }
 
-      #sampleTabs::part(proxy) {
+      #sampleTabs::part(proxy),
+      #sampleTabs::part(proxy-selected) {
         background: #222;
         border: none;
         border-radius: 0;
@@ -73,11 +74,12 @@
         white-space: nowrap;
       }
 
-      #sampleTabs::part(proxy):hover {
+      #sampleTabs::part(proxy):hover,
+      #sampleTabs::part(proxy-selected):hover {
         background: #444;
       }
 
-      #sampleTabs::part(proxy).selected {
+      #sampleTabs::part(proxy-selected) {
         background: #666;
       }
     </style>

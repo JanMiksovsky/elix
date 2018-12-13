@@ -198,7 +198,11 @@ class Explorer extends Base {
    * @returns {object} the DOM updates that should be applied to the item
    */
   proxyUpdates(/* eslint-disable no-unused-vars */ proxy, calcs) {
-    return {};
+    return {
+      attributes: {
+        part: calcs.selected ? 'proxy-selected' : 'proxy'
+      }
+    };
   }
 
   // If items for default proxies have changed, recreate the proxies.
@@ -245,13 +249,16 @@ class Explorer extends Base {
       // Render updates for proxies.
       const proxies = this.proxies;
       const isDefaultProxy = this.state.defaultProxies.length > 0;
+      const selectedIndex = this.state.selectedIndex;
       proxies.forEach((proxy, index) => {
         // Ask component for any updates to this proxy.
         const item = items[index];
+        const selected = index === selectedIndex;
         const calcs = {
           item,
           index,
-          isDefaultProxy
+          isDefaultProxy,
+          selected
         };
         const updates = this.proxyUpdates(proxy, calcs);
         // Apply updates to the proxy.
@@ -393,9 +400,6 @@ function createDefaultProxies(items, proxyRole) {
   const proxies = items ?
     items.map(() => template.createElement(proxyRole)) :
     [];
-  proxies.forEach(proxy => {
-    proxy.setAttribute('part', 'proxy');
-  });
   // Make the array immutable to help update performance.
   Object.freeze(proxies);
   return proxies;
