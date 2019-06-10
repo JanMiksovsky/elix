@@ -388,6 +388,9 @@ export const scrollTarget = Symbol('scrollTarget');
  */
 export const startEffect = Symbol('startEffect');
 
+/* TODO: Docs */
+export const styleSheets = Symbol('styleSheets');
+
 /**
  * Symbol for the `swipeDown` method.
  * 

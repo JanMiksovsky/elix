@@ -32,9 +32,11 @@
  */
 export function concat(...templates) {
   const result = document.createElement('template');
-  const clones = templates.map(template =>
-    document.importNode(template.content, true)
-  );
+  const clones = templates
+    .filter(template => template)
+    .map(template =>
+      document.importNode(template.content, true)
+    );
   result.content.append(...clones);
   return result;
 }

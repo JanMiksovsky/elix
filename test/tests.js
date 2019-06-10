@@ -28,6 +28,7 @@ import './tests/ShadowTemplateMixin.tests.js';
 import './tests/SingleSelectionMixin.tests.js';
 import './tests/SlotContentMixin.tests.js';
 import './tests/State.tests.js';
+import './tests/StyleSheetsMixin.tests.js';
 import './tests/TapSelectionMixin.tests.js';
 import './tests/template.tests.js';
 import './tests/TransitionEffectMixin.tests.js';
