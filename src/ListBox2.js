@@ -4,7 +4,6 @@ import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
-import GenericMixin from './GenericMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -16,6 +15,7 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import StyleSheetsMixin from './StyleSheetsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
 
@@ -24,7 +24,6 @@ const Base =
   ComposedFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
-  GenericMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -35,6 +34,7 @@ const Base =
   SelectionInViewMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
+  StyleSheetsMixin(
   TapSelectionMixin(
     ReactiveElement
   ))))))))))))))));
@@ -83,9 +83,20 @@ class ListBox extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    if (changed.generic) {
-      const { generic } = this.state;
-      this.classList.toggle('generic', generic);
+    if (changed.orientation) {
+      // Update list orientation styling.
+      const style = this.state.orientation === 'vertical' ?
+        {
+          flexDirection: 'column',
+          overflowX: 'hidden',
+          overflowY: 'auto'
+        } :
+        {
+          flexDirection: 'row',
+          overflowX: 'auto',
+          overflowY: 'hidden'
+        };
+      Object.assign(this.$.content.style, style);
     }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
@@ -97,79 +108,62 @@ class ListBox extends Base {
         });
       }
     }
-    if (changed.orientation) {
-      // Update list orientation styling.
-      const style = this.state.orientation === 'vertical' ?
-        {
-          display: 'block',
-          flexDirection: '',
-          overflowX: 'hidden',
-          overflowY: 'auto'
-        } :
-        {
-          display: 'flex',
-          flexDirection: 'row',
-          overflowX: 'auto',
-          overflowY: 'hidden'
-        };
-      Object.assign(this.$.content.style, style);
-    }
   }
 
   get [symbols.scrollTarget]() {
     return this.$.content;
   }
 
+  get [symbols.styleSheets]() {
+    return [super[symbols.styleSheets], `
+      :host {
+        border: 1px solid gray;
+        box-sizing: border-box;
+        cursor: default;
+        display: flex;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      #content {
+        display: flex;
+        flex: 1;
+        max-height: 100%;
+        max-width: 100%;
+        -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+      }
+
+      ::slotted(*) {
+        padding: 0.25em;
+      }
+
+      ::slotted(.selected) {
+        background: highlight;
+        color: highlighttext;
+      }
+
+      @media (pointer: coarse) {
+        ::slotted(*) {
+          padding: 1em;
+        }
+      }
+
+      ::slotted(option) {
+        font-weight: inherit;
+        min-height: inherit;
+      }
+    `];
+  }
+
   get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          border: 1px solid gray;
-          cursor: default;
-          display: flex;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        #content {
-          display: flex;
-          flex: 1;
-          max-height: 100%;
-          max-width: 100%;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
-
-        :host(.generic) {
-          border: 1px solid gray;
-        }
-
-        :host(.generic) ::slotted(*) {
-          padding: 0.25em;
-        }
-
-        :host(.generic) ::slotted(.selected) {
-          background: highlight;
-          color: highlighttext;
-        }
-
-        @media (pointer: coarse) {
-          :host(.generic) ::slotted(*) {
-            padding: 1em;
-          }
-        }
-
-        ::slotted(option) {
-          font-weight: inherit;
-          min-height: inherit;
-        }
-      </style>
-      <div id="content" class="generic" role="none">
+    return template.concat(super[symbols.template], template.html`
+      <div id="content" role="none">
         <slot></slot>
       </div>
-    `;
+    `);
   }
 
 }
 
 
-customElements.define('elix-list-box', ListBox);
+customElements.define('elix-list-box-2', ListBox);
 export default ListBox;
