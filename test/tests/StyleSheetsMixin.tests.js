@@ -1,6 +1,5 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import { css } from '../../src/StyleSheet.js';
 import StyleSheetsMixin from '../../src/StyleSheetsMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -8,12 +7,11 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 class StyleSheetsTest extends StyleSheetsMixin(ReactiveElement) {
 
   get [symbols.styleSheets]() {
-    const sheet = css`
+    return [`
       :host {
         color: red;
       }
-    `;
-    return [sheet];
+    `];
   }
 
   get [symbols.template]() {

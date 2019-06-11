@@ -120,51 +120,55 @@ class ListBox extends Base {
     return this.$.content;
   }
 
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          box-sizing: border-box;
-          cursor: default;
-          display: flex;
-          -webkit-tap-highlight-color: transparent;
-        }
+  get [symbols.styleSheets]() {
+    return [super[symbols.styleSheets], `
+      :host {
+        border: 1px solid gray;
+        cursor: default;
+        display: flex;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-        #content {
-          flex: 1;
-          max-height: 100%;
-          max-width: 100%;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
+      #content {
+        display: flex;
+        flex: 1;
+        max-height: 100%;
+        max-width: 100%;
+        -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+      }
 
-        :host(.generic) {
-          border: 1px solid gray;
-        }
+      :host(.generic) {
+        border: 1px solid gray;
+      }
 
+      :host(.generic) ::slotted(*) {
+        padding: 0.25em;
+      }
+
+      :host(.generic) ::slotted(.selected) {
+        background: highlight;
+        color: highlighttext;
+      }
+
+      @media (pointer: coarse) {
         :host(.generic) ::slotted(*) {
-          padding: 0.25em;
+          padding: 1em;
         }
+      }
 
-        :host(.generic) ::slotted(.selected) {
-          background: highlight;
-          color: highlighttext;
-        }
+      ::slotted(option) {
+        font-weight: inherit;
+        min-height: inherit;
+      }
+    `];
+  }
 
-        @media (pointer: coarse) {
-          :host(.generic) ::slotted(*) {
-            padding: 1em;
-          }
-        }
-
-        ::slotted(option) {
-          font-weight: inherit;
-          min-height: inherit;
-        }
-      </style>
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
       <div id="content" class="generic" role="none">
         <slot></slot>
       </div>
-    `;
+    `);
   }
 
 }

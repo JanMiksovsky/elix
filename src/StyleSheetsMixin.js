@@ -31,20 +31,26 @@ export default function StyleSheetsMixin(Base) {
         // adopted the stylesheets.
         return;
       }
-      this.shadowRoot.adoptedStyleSheets = this[symbols.styleSheets];
+      const sheets = this[symbols.styleSheets]
+        .filter(sheet => sheet)
+        .map(sheet => {
+          if (sheet instanceof CSSStyleSheet) {
+            return sheet;
+          } else if (typeof sheet === 'string') {
+            const s = new CSSStyleSheet();
+            s.replaceSync(sheet);
+            return s;
+          }
+        });
+      this.shadowRoot.adoptedStyleSheets = sheets;
     }
 
     get [symbols.template]() {
       const base = super[symbols.template];
       if (!nativeAdoptedStyleSheets) {
         const sheets = this[symbols.styleSheets];
-        if (sheets.length > 0) {
-          // sheets.forEach(sheet =>
-          //   sheet.cssRules.forEach(rule =>
-          //     style.sheet.insertRule(rule.cssText)));
-          const text = sheets.map(sheet =>
-            [...sheet.cssRules].map(rule => rule.cssText).join('\n')
-          ).join('\n');
+        const text = sheets.join('\n');
+        if (text) {
           return template.concat(base, template.html`
             <style>${text}</style>
           `);
