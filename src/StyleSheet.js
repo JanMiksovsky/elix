@@ -1,3 +1,7 @@
+// TOOD: Remove?
+// This provides a template literal for constructing a CSSStyleSheet,
+// but it's probably simpler just to use strings.
+
 let nativeConstructibleStyleSheets;
 try {
   new CSSStyleSheet();
@@ -18,7 +22,7 @@ export function css(strings, ...substitutions) {
   let sheet;
   if (nativeConstructibleStyleSheets) {
     sheet = new CSSStyleSheet();
-    sheet.replaceSync(complete);
+    /** @type {any} */ (sheet).replaceSync(complete);
   } else {
     const element = document.createElement('style');
     element.textContent = complete;

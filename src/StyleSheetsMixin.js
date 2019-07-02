@@ -5,6 +5,9 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 
 const nativeAdoptedStyleSheets = 'adoptedStyleSheets' in ShadowRoot.prototype;
 
+// A cache mapping element class to stylesheet arrays.
+const classStyleSheetsMap = new Map();
+
 
 /**
  * Stamps a template into a component's Shadow DOM when instantiated
@@ -24,25 +27,19 @@ export default function StyleSheetsMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       // TODO: warn if no shadow root
-      if (!nativeAdoptedStyleSheets ||
-          !this.shadowRoot ||
-          this.shadowRoot.adoptedStyleSheets.length > 0) {
+      if (!nativeAdoptedStyleSheets || !this.shadowRoot) {
         // No native support, or no shadow root was attached, or we've already
         // adopted the stylesheets.
         return;
       }
-      const sheets = this[symbols.styleSheets]
-        .filter(sheet => sheet)
-        .map(sheet => {
-          if (sheet instanceof CSSStyleSheet) {
-            return sheet;
-          } else if (typeof sheet === 'string') {
-            const s = new CSSStyleSheet();
-            s.replaceSync(sheet);
-            return s;
-          }
-        });
-      this.shadowRoot.adoptedStyleSheets = sheets;
+      /** @type {any} */
+      const cast =  this.shadowRoot;
+      if (cast.adoptedStyleSheets.length > 0) {
+        // Already adopted
+        return;
+      }
+      const sheets = getStyleSheets(this);
+      cast.adoptedStyleSheets = sheets;
     }
 
     get [symbols.template]() {
@@ -62,4 +59,32 @@ export default function StyleSheetsMixin(Base) {
   }
 
   return StyleSheets;
+}
+
+
+/**
+ * Return and cache the stylesheet array for the given element's class.
+ * 
+ * @private
+ * @param {HTMLElement} element
+ * @returns {CSSStyleSheet[]}
+ */
+function getStyleSheets(element) {
+  let styleSheets = classStyleSheetsMap.get(element.constructor);
+  if (!styleSheets) {
+    styleSheets = element[symbols.styleSheets]
+      .filter(sheet => sheet)
+      .map(sheet => {
+        if (sheet instanceof CSSStyleSheet) {
+          // Return as is.
+          return sheet;
+        }
+        // Convert from string.
+        const s = new CSSStyleSheet();
+        /** @type {any} */ (s).replaceSync(sheet);
+        return s;
+      });
+    classStyleSheetsMap.set(element.constructor, styleSheets);
+  }
+  return styleSheets;
 }
