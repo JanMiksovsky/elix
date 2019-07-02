@@ -4,6 +4,7 @@ import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import GenericMixin from './GenericMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -24,6 +25,7 @@ const Base =
   ComposedFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
+  GenericMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -37,7 +39,7 @@ const Base =
   StyleSheetsMixin(
   TapSelectionMixin(
     ReactiveElement
-  ))))))))))))))));
+  )))))))))))))))));
 
 
 /**
@@ -54,6 +56,7 @@ const Base =
  * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
+ * @mixes GenericMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -83,20 +86,9 @@ class ListBox extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    if (changed.orientation) {
-      // Update list orientation styling.
-      const style = this.state.orientation === 'vertical' ?
-        {
-          flexDirection: 'column',
-          overflowX: 'hidden',
-          overflowY: 'auto'
-        } :
-        {
-          flexDirection: 'row',
-          overflowX: 'auto',
-          overflowY: 'hidden'
-        };
-      Object.assign(this.$.content.style, style);
+    if (changed.generic) {
+      const { generic } = this.state;
+      this.classList.toggle('generic', generic);
     }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
@@ -108,6 +100,23 @@ class ListBox extends Base {
         });
       }
     }
+    if (changed.orientation) {
+      // Update list orientation styling.
+      const style = this.state.orientation === 'vertical' ?
+        {
+          display: 'block',
+          flexDirection: '',
+          overflowX: 'hidden',
+          overflowY: 'auto'
+        } :
+        {
+          display: 'flex',
+          flexDirection: 'row',
+          overflowX: 'auto',
+          overflowY: 'hidden'
+        };
+      Object.assign(this.$.content.style, style);
+    }
   }
 
   get [symbols.scrollTarget]() {
@@ -115,7 +124,8 @@ class ListBox extends Base {
   }
 
   get [symbols.styleSheets]() {
-    return [super[symbols.styleSheets], `
+    // TODO: Include super[symbols.styleSheets]
+    return [`
       :host {
         border: 1px solid gray;
         box-sizing: border-box;
@@ -132,17 +142,21 @@ class ListBox extends Base {
         -webkit-overflow-scrolling: touch; /* for momentum scrolling */
       }
 
-      ::slotted(*) {
+      :host(.generic) {
+        border: 1px solid gray;
+      }
+
+      :host(.generic) ::slotted(*) {
         padding: 0.25em;
       }
 
-      ::slotted(.selected) {
+      :host(.generic) ::slotted(.selected) {
         background: highlight;
         color: highlighttext;
       }
 
       @media (pointer: coarse) {
-        ::slotted(*) {
+        :host(.generic) ::slotted(*) {
           padding: 1em;
         }
       }
@@ -156,7 +170,7 @@ class ListBox extends Base {
 
   get [symbols.template]() {
     return template.concat(super[symbols.template], template.html`
-      <div id="content" role="none">
+      <div id="content" class="generic" role="none">
         <slot></slot>
       </div>
     `);

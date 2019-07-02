@@ -54,6 +54,7 @@ const Base =
  * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
+ * @mixes GenericMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
