@@ -52,8 +52,7 @@
     }
 
     /* Styling for the "proxy" elements (here, the individual tab buttons). */
-    elix-tabs::part(proxy),
-    elix-tabs::part(proxy-selected) {
+    elix-tabs::part(proxy) {
       background: #222;
       border: none;
       border-radius: 0;
@@ -70,13 +69,12 @@
       white-space: nowrap;
     }
 
-    elix-tabs::part(proxy):hover,
-    elix-tabs::part(proxy-selected):hover {
-      background: #444;
+    elix-tabs::part(proxy):state(selected) {
+      background: #666;
     }
 
-    elix-tabs::part(proxy-selected) {
-      background: #666;
+    elix-tabs::part(proxy):hover {
+      background: #444;
     }
 
     :not(:defined) {
