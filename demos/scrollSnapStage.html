@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix ScrollSnapStage</title>
+    <link rel="stylesheet" href="demos.css" />
+  </head>
+
+  <body role="main">
+    <div class="demo" style="height: 100px; width: 300px">
+      <script type="module">
+        import AriaListMixin from '../src/AriaListMixin.js';
+        import AriaRoleMixin from '../src/AriaRoleMixin.js';
+        import DirectionSelectionMixin from '../src/DirectionSelectionMixin.js';
+        import KeyboardDirectionMixin from '../src/KeyboardDirectionMixin.js';
+        import KeyboardMixin from '../src/KeyboardMixin.js';
+        import ScrollSnapStage from '../src/ScrollSnapStage.js';
+
+        const ScrollSnapStageWithKeyboard = AriaListMixin(
+          AriaRoleMixin(
+            DirectionSelectionMixin(
+              KeyboardDirectionMixin(KeyboardMixin(ScrollSnapStage))
+            )
+          )
+        );
+
+        customElements.define(
+          'scroll-snap-stage-with-keyboard',
+          ScrollSnapStageWithKeyboard
+        );
+        export default ScrollSnapStageWithKeyboard;
+      </script>
+      <style>
+        scroll-snap-stage-with-keyboard {
+          border: 1px solid gray;
+          height: 100%;
+          width: 100%;
+        }
+
+        .panel {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          flex-basis: 33.333%;
+        }
+
+        .panel[selected] {
+          font-weight: bold;
+        }
+      </style>
+      <scroll-snap-stage-with-keyboard>
+        <div class="panel" style="background: hsl(30, 100%, 90%)">One</div>
+        <div class="panel" style="background: hsl(60, 100%, 90%)">Two</div>
+        <div class="panel" style="background: hsl(90, 100%, 90%)">Three</div>
+        <div class="panel" style="background: hsl(120, 100%, 90%)">Four</div>
+        <div class="panel" style="background: hsl(150, 100%, 90%)">Five</div>
+        <div class="panel" style="background: hsl(180, 100%, 90%)">Six</div>
+        <div class="panel" style="background: hsl(210, 100%, 90%)">Seven</div>
+        <div class="panel" style="background: hsl(240, 100%, 90%)">Eight</div>
+        <div class="panel" style="background: hsl(270, 100%, 90%)">Nine</div>
+        <div class="panel" style="background: hsl(300, 100%, 90%)">Ten</div>
+      </scroll-snap-stage-with-keyboard>
+    </div>
+  </body>
+</html>
