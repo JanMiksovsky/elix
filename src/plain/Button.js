@@ -8,7 +8,7 @@ class PlainButton extends Button {
     result.content.append(
       template.html`
         <style>
-          #inner {
+          [part="inner"] {
             display: inline-flex;
             justify-content: center;
             margin: 0;
