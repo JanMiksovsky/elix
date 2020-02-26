@@ -13,9 +13,9 @@
     "strict": true,
     "target": "ES2019"
   },
-  "include": ["../src/**/*.js"],
+  "include": ["../src/core/*.js"],
   "exclude": [
-    "elix.js",
-    "*Mixin.js" // Mixins are too complex for us to generate from jsDoc comments.
+    "**elix.js",
+    "../src/**/*Mixin.js" // Mixins are too complex for us to generate from jsDoc comments.
   ]
 }
