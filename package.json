@@ -47,6 +47,7 @@
   "scripts": {
     "ci": "npm run lint && npm run sauce-tests",
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
+    "generate-typescript": "tsc --p tasks/tsconfig.generate.json",
     "lint": "eslint .; tsc",
     "prepublishOnly": "node tasks/prepublishOnly.js",
     "sauce-tests": "node tasks/sauceTests.js",
