@@ -42,7 +42,7 @@
     "puppeteer": "2.1.1",
     "sauce-test-runner": "componentkitchen/sauce-test-runner",
     "sinon": "9.0.0",
-    "typescript": "3.8.2"
+    "typescript": "3.7.5"
   },
   "scripts": {
     "ci": "npm run lint && npm run sauce-tests",
