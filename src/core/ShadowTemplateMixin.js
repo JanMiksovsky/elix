@@ -15,9 +15,19 @@ const shadowIdProxyHandler = {
   get(target, property) {
     const element = target[proxyElementKey];
     const root = element[internal.shadowRoot];
-    return root && typeof property === "string"
-      ? root.getElementById(property)
-      : null;
+    const result =
+      root && typeof property === "string"
+        ? root.getElementById(property)
+        : null;
+    if (result) {
+      const uppercaseRegEx = /([A-Z])/g;
+      const partName = property.replace(uppercaseRegEx, "-$1").toLowerCase();
+      if (!result.matches(`[part~="${partName}"]`)) {
+        const name = element.constructor.name;
+        console.log(`${name}.${result.id}`);
+      }
+    }
+    return result;
   }
 };
 
