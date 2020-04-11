@@ -33,7 +33,7 @@ class HamburgerMenuButton extends Base {
     return Object.assign(super[internal.defaultState], {
       fromEdge: "start",
       menuButtonPartType: Button,
-      menuPartType: Drawer
+      menuPartType: Drawer,
     });
   }
 
@@ -89,6 +89,10 @@ class HamburgerMenuButton extends Base {
     return this[internal.state].menuPartType;
   }
   set menuPartType(menuPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public menuPartType property is deprecated and will be removed. Create a subclass and set the menuPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ menuPartType });
   }
 
@@ -103,6 +107,10 @@ class HamburgerMenuButton extends Base {
     return this[internal.state].menuButtonPartType;
   }
   set menuButtonPartType(menuButtonPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public menuButtonPartType property is deprecated and will be removed. Create a subclass and set the menuButtonPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ menuButtonPartType });
   }
 
@@ -120,17 +128,17 @@ class HamburgerMenuButton extends Base {
     }
 
     if (changed.menuPartType) {
-      this[internal.ids].menu.addEventListener("closed", event => {
+      this[internal.ids].menu.addEventListener("closed", (event) => {
         /** @type {any} */
         const cast = event;
         this[internal.setState]({
           closeResult: cast.detail.closeResult,
-          opened: false
+          opened: false,
         });
       });
       this[internal.ids].menu.addEventListener("opened", () => {
         this[internal.setState]({
-          opened: true
+          opened: true,
         });
       });
     }

@@ -58,6 +58,10 @@ class CalendarMonth extends Base {
     return this[internal.state].dayNamesHeaderPartType;
   }
   set dayNamesHeaderPartType(dayNamesHeaderPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public dayNamesHeaderPartType property is deprecated and will be removed. Create a subclass and set the dayNamesHeaderPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ dayNamesHeaderPartType });
   }
 
@@ -72,6 +76,10 @@ class CalendarMonth extends Base {
     return this[internal.state].dayPartType;
   }
   set dayPartType(dayPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public dayPartType property is deprecated and will be removed. Create a subclass and set the dayPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ dayPartType });
   }
 
@@ -115,7 +123,7 @@ class CalendarMonth extends Base {
       monthYearHeaderPartType: CalendarMonthYearHeader,
       showCompleteWeeks: false,
       showSelectedDay: false,
-      yearFormat: "numeric"
+      yearFormat: "numeric",
     });
   }
 
@@ -145,6 +153,10 @@ class CalendarMonth extends Base {
     return this[internal.state].monthDaysPartType;
   }
   set monthDaysPartType(monthDaysPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public monthDaysPartType property is deprecated and will be removed. Create a subclass and set the monthDaysPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ monthDaysPartType });
   }
 
@@ -159,6 +171,10 @@ class CalendarMonth extends Base {
     return this[internal.state].monthYearHeaderPartType;
   }
   set monthYearHeaderPartType(monthYearHeaderPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public monthYearHeaderPartType property is deprecated and will be removed. Create a subclass and set the monthYearHeaderPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ monthYearHeaderPartType });
   }
 
@@ -166,7 +182,7 @@ class CalendarMonth extends Base {
     super[internal.render](changed);
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
-    if (changed.dayPartType || changed.monthDaysPartType) {
+    if (changed.dayPartType || changed.monthYearHeaderPartType) {
       /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
         internal.state
       ].dayPartType;
@@ -193,47 +209,41 @@ class CalendarMonth extends Base {
         Object.assign(this[internal.ids].monthDays, {
           date,
           dayCount,
-          startDate
+          startDate,
         });
-        /** @type {any} */ (this[
-          internal.ids
-        ].monthYearHeader).date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this[internal.ids]
+          .monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
 
     if (changed.daysOfWeekFormat || changed.dayNamesHeaderPartType) {
       const { daysOfWeekFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].dayNamesHeader).format = daysOfWeekFormat;
+      /** @type {any} */ (this[internal.ids]
+        .dayNamesHeader).format = daysOfWeekFormat;
     }
 
     if (changed.showCompleteWeeks || changed.monthDaysPartType) {
       const { showCompleteWeeks } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthDays).showCompleteWeeks = showCompleteWeeks;
+      /** @type {any} */ (this[internal.ids]
+        .monthDays).showCompleteWeeks = showCompleteWeeks;
     }
 
     if (changed.showSelectedDay || changed.monthDaysPartType) {
       const { showSelectedDay } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthDays).showSelectedDay = showSelectedDay;
+      /** @type {any} */ (this[internal.ids]
+        .monthDays).showSelectedDay = showSelectedDay;
     }
 
     if (changed.monthFormat || changed.monthYearHeaderPartType) {
       const { monthFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthYearHeader).monthFormat = monthFormat;
+      /** @type {any} */ (this[internal.ids]
+        .monthYearHeader).monthFormat = monthFormat;
     }
 
     if (changed.yearFormat || changed.monthYearHeaderPartType) {
       const { yearFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthYearHeader).yearFormat = yearFormat;
+      /** @type {any} */ (this[internal.ids]
+        .monthYearHeader).yearFormat = yearFormat;
     }
   }
 

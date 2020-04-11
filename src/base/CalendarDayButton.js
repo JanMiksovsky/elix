@@ -20,7 +20,7 @@ class CalendarDayButton extends Base {
       date: calendar.today(),
       dayPartType: CalendarDay,
       outsideRange: false,
-      tabIndex: -1
+      tabIndex: -1,
     });
   }
 
@@ -35,6 +35,10 @@ class CalendarDayButton extends Base {
     return this[internal.state].dayPartType;
   }
   set dayPartType(dayPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public dayPartType property is deprecated and will be removed. Create a subclass and set the dayPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ dayPartType });
   }
 

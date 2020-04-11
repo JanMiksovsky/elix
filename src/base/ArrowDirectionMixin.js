@@ -32,7 +32,7 @@ function ArrowDirectionMixin(Base) {
     set arrowButtonOverlap(arrowButtonOverlap) {
       const parsed = String(arrowButtonOverlap) === "true";
       this[internal.setState]({
-        arrowButtonOverlap: parsed
+        arrowButtonOverlap: parsed,
       });
     }
 
@@ -46,6 +46,10 @@ function ArrowDirectionMixin(Base) {
       return this[internal.state].arrowButtonPartType;
     }
     set arrowButtonPartType(arrowButtonPartType) {
+      /* eslint-disable no-console */
+      console.warn(
+        `Deprecation warning: The public arrowButtonPartType property is deprecated and will be removed. Create a subclass and set the arrowButtonPartType state member in defaultState instead.`
+      );
       this[internal.setState]({ arrowButtonPartType });
     }
 
@@ -71,7 +75,7 @@ function ArrowDirectionMixin(Base) {
         arrowButtonOverlap: true,
         arrowButtonPartType: Button,
         orientation: "horizontal",
-        showArrowButtons: true
+        showArrowButtons: true,
       });
     }
 
@@ -126,7 +130,7 @@ function ArrowDirectionMixin(Base) {
         canGoNext,
         canGoPrevious,
         orientation,
-        rightToLeft
+        rightToLeft,
       } = this[internal.state];
       const vertical = orientation === "vertical";
       /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
@@ -148,17 +152,17 @@ function ArrowDirectionMixin(Base) {
           bottom: null,
           left: null,
           right: null,
-          top: null
+          top: null,
         };
         if (arrowButtonOverlap) {
           Object.assign(buttonStyle, {
             position: "absolute",
-            "z-index": 1
+            "z-index": 1,
           });
         } else {
           Object.assign(buttonStyle, {
             position: null,
-            "z-index": null
+            "z-index": null,
           });
         }
         let previousButtonStyle;
@@ -168,34 +172,34 @@ function ArrowDirectionMixin(Base) {
             // Vertical
             Object.assign(buttonStyle, {
               left: 0,
-              right: 0
+              right: 0,
             });
             previousButtonStyle = {
-              top: 0
+              top: 0,
             };
             nextButtonStyle = {
-              bottom: 0
+              bottom: 0,
             };
           } else {
             // Horizontal
             Object.assign(buttonStyle, {
               bottom: 0,
-              top: 0
+              top: 0,
             });
             if (rightToLeft) {
               previousButtonStyle = {
-                right: 0
+                right: 0,
               };
               nextButtonStyle = {
-                left: 0
+                left: 0,
               };
             } else {
               // Typical condition: horizontal, left-to-right
               previousButtonStyle = {
-                left: 0
+                left: 0,
               };
               nextButtonStyle = {
-                right: 0
+                right: 0,
               };
             }
           }
@@ -237,7 +241,7 @@ function ArrowDirectionMixin(Base) {
     set showArrowButtons(showArrowButtons) {
       const parsed = String(showArrowButtons) === "true";
       this[internal.setState]({
-        showArrowButtons: parsed
+        showArrowButtons: parsed,
       });
     }
 

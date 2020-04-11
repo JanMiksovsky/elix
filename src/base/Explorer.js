@@ -14,7 +14,7 @@ const lateralPositions = {
   end: true,
   left: true,
   right: true,
-  start: true
+  start: true,
 };
 
 const Base = LanguageDirectionMixin(
@@ -54,7 +54,7 @@ class Explorer extends Base {
       proxyListPosition: "top",
       proxyListPartType: ListBox,
       selectionRequired: true,
-      stagePartType: Modes
+      stagePartType: Modes,
     });
   }
 
@@ -73,7 +73,7 @@ class Explorer extends Base {
           // Nodes assigned to slot become proxies.
           this[internal.setState]({
             proxiesAssigned,
-            proxies
+            proxies,
           });
         } else {
           // No nodes assigned -- we'll need to generate proxies.
@@ -115,7 +115,7 @@ class Explorer extends Base {
       );
       this[internal.ids].stage.addEventListener(
         "selection-effect-finished",
-        event => {
+        (event) => {
           const { selectedIndex } = /** @type {any} */ (event).detail;
           /**
            * This event is raised if the current `stage` applies a transition
@@ -131,7 +131,7 @@ class Explorer extends Base {
            * @event selection-effect-finished
            */
           const finishedEvent = new CustomEvent("selection-effect-finished", {
-            detail: { selectedIndex }
+            detail: { selectedIndex },
           });
           this.dispatchEvent(finishedEvent);
         }
@@ -160,7 +160,7 @@ class Explorer extends Base {
         height: lateralPosition ? "100%" : null,
         position: proxyListOverlap ? "absolute" : null,
         width: lateralPosition ? null : "100%",
-        zIndex: proxyListOverlap ? "1" : null
+        zIndex: proxyListOverlap ? "1" : null,
       });
     }
 
@@ -197,7 +197,7 @@ class Explorer extends Base {
         bottom: proxyListPosition === "bottom" ? "0" : null,
         left: proxyListPosition === "left" ? "0" : null,
         right: proxyListPosition === "right" ? "0" : null,
-        top: proxyListPosition === "top" ? "0" : null
+        top: proxyListPosition === "top" ? "0" : null,
       });
     }
 
@@ -262,7 +262,7 @@ class Explorer extends Base {
   set proxyListOverlap(proxyListOverlap) {
     const parsed = String(proxyListOverlap) === "true";
     this[internal.setState]({
-      proxyListOverlap: parsed
+      proxyListOverlap: parsed,
     });
   }
 
@@ -294,6 +294,10 @@ class Explorer extends Base {
     return this[internal.state].proxyListPartType;
   }
   set proxyListPartType(proxyListPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public proxyListPartType property is deprecated and will be removed. Create a subclass and set the proxyListPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ proxyListPartType });
   }
 
@@ -308,6 +312,10 @@ class Explorer extends Base {
     return this[internal.state].proxyPartType;
   }
   set proxyPartType(proxyPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public proxyPartType property is deprecated and will be removed. Create a subclass and set the proxyPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ proxyPartType });
   }
 
@@ -322,6 +330,10 @@ class Explorer extends Base {
     return this[internal.state].stagePartType;
   }
   set stagePartType(stagePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public stagePartType property is deprecated and will be removed. Create a subclass and set the stagePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ stagePartType });
   }
 
@@ -335,7 +347,7 @@ class Explorer extends Base {
       if ((changed.items || changed.proxyPartType) && !proxiesAssigned) {
         // Generate sufficient default proxies.
         Object.assign(effects, {
-          proxies: createDefaultProxies(items, proxyPartType)
+          proxies: createDefaultProxies(items, proxyPartType),
         });
       }
     }
@@ -388,7 +400,7 @@ function createDefaultProxies(items, proxyPartType) {
   const proxies = items
     ? items.map(() => template.createElement(proxyPartType))
     : [];
-  proxies.forEach(proxy => {
+  proxies.forEach((proxy) => {
     // As of February 2020, the `part` property is not available in all
     // browsers, so we set it as an attribute instead.
     /** @type {any} */ (proxy).setAttribute("part", "proxy");
@@ -467,8 +479,8 @@ function setListAndStageOrder(element, state) {
   const firstElement = listInInitialPosition ? list : stage;
   const lastElement = listInInitialPosition ? stage : list;
   if (firstElement && lastElement) {
-    const nextElementSibling =
-      /** @type {any} */ (firstElement).nextElementSibling;
+    const nextElementSibling = /** @type {any} */ (firstElement)
+      .nextElementSibling;
     if (nextElementSibling !== lastElement) {
       element[internal.ids].explorerContainer.insertBefore(
         firstElement,

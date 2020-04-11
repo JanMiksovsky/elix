@@ -59,13 +59,17 @@ class Overlay extends Base {
     return this[internal.state].backdropPartType;
   }
   set backdropPartType(backdropPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public backdropPartType property is deprecated and will be removed. Create a subclass and set the backdropPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ backdropPartType });
   }
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: Backdrop,
-      framePartType: OverlayFrame
+      framePartType: OverlayFrame,
     });
   }
 
@@ -88,6 +92,10 @@ class Overlay extends Base {
     return this[internal.state].framePartType;
   }
   set framePartType(framePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public framePartType property is deprecated and will be removed. Create a subclass and set the framePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ framePartType });
   }
 
@@ -101,7 +109,7 @@ class Overlay extends Base {
 
     if (changed.opened && this[internal.state].content) {
       // If contents know how to size themselves, ask them to check their size.
-      this[internal.state].content.forEach(element => {
+      this[internal.state].content.forEach((element) => {
         if (element[internal.checkSize]) {
           element[internal.checkSize]();
         }

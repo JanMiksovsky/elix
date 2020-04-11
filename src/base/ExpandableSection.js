@@ -26,7 +26,7 @@ class ExpandableSection extends Base {
       headerPartType: Button,
       panelPartType: ExpandablePanel,
       role: "region",
-      togglePartType: UpDownToggle
+      togglePartType: UpDownToggle,
     });
   }
 
@@ -41,6 +41,10 @@ class ExpandableSection extends Base {
     return this[internal.state].headerPartType;
   }
   set headerPartType(headerPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public headerPartType property is deprecated and will be removed. Create a subclass and set the headerPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ headerPartType });
   }
 
@@ -55,6 +59,10 @@ class ExpandableSection extends Base {
     return this[internal.state].panelPartType;
   }
   set panelPartType(panelPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public panelPartType property is deprecated and will be removed. Create a subclass and set the panelPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ panelPartType });
   }
 
@@ -146,6 +154,10 @@ class ExpandableSection extends Base {
     return this[internal.state].togglePartType;
   }
   set togglePartType(togglePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public togglePartType property is deprecated and will be removed. Create a subclass and set the togglePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ togglePartType });
   }
 }

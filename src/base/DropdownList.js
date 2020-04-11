@@ -33,7 +33,7 @@ class DropdownList extends Base {
     return Object.assign(super[internal.defaultState], {
       itemRole: "menuitemradio",
       selectionRequired: true,
-      valuePartType: "div"
+      valuePartType: "div",
     });
   }
 
@@ -80,12 +80,7 @@ class DropdownList extends Base {
     // Replace the source slot with an element to show the value.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      template.replace(
-        sourceSlot,
-        html`
-          <div id="value" part="value"></div>
-        `
-      );
+      template.replace(sourceSlot, html` <div id="value" part="value"></div> `);
     }
 
     renderParts(result.content, this[internal.state]);
@@ -104,6 +99,10 @@ class DropdownList extends Base {
     return this[internal.state].valuePartType;
   }
   set valuePartType(valuePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public valuePartType property is deprecated and will be removed. Create a subclass and set the valuePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ valuePartType });
   }
 }

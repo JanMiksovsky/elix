@@ -37,7 +37,7 @@ class MenuButton extends PopupButton {
       selectedItem: null,
       popupTogglePartType: UpDownToggle,
       touchstartX: null,
-      touchstartY: null
+      touchstartY: null,
     });
   }
 
@@ -90,8 +90,8 @@ class MenuButton extends PopupButton {
        */
       const event = new CustomEvent("menu-item-selected", {
         detail: {
-          selectedItem: item
-        }
+          selectedItem: item,
+        },
       });
       this.dispatchEvent(event);
     }
@@ -148,6 +148,10 @@ class MenuButton extends PopupButton {
     return this[internal.state].menuPartType;
   }
   set menuPartType(menuPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public menuPartType property is deprecated and will be removed. Create a subclass and set the menuPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ menuPartType });
   }
 
@@ -162,6 +166,10 @@ class MenuButton extends PopupButton {
     return this[internal.state].popupTogglePartType;
   }
   set popupTogglePartType(popupTogglePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public popupTogglePartType property is deprecated and will be removed. Create a subclass and set the popupTogglePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ popupTogglePartType });
   }
 
@@ -172,14 +180,14 @@ class MenuButton extends PopupButton {
 
     if (this[internal.firstRender]) {
       // If the user hovers over an item, select it.
-      this.addEventListener("mousemove", event => {
+      this.addEventListener("mousemove", (event) => {
         const target = event.target;
         if (target && target instanceof Node) {
           const hoverIndex = indexOfItemContainingTarget(this.items, target);
           if (hoverIndex !== this[internal.state].menuSelectedIndex) {
             this[internal.raiseChangeEvents] = true;
             this[internal.setState]({
-              menuSelectedIndex: hoverIndex
+              menuSelectedIndex: hoverIndex,
             });
             this[internal.raiseChangeEvents] = false;
           }
@@ -193,7 +201,7 @@ class MenuButton extends PopupButton {
 
     if (changed.menuPartType) {
       // Close the popup if menu loses focus.
-      this[internal.ids].menu.addEventListener("blur", async event => {
+      this[internal.ids].menu.addEventListener("blur", async (event) => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
@@ -212,7 +220,7 @@ class MenuButton extends PopupButton {
       // both to permit keyboard use, and to avoid closing the menu on blur (see
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
-      this[internal.ids].menu.addEventListener("mousedown", event => {
+      this[internal.ids].menu.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -225,7 +233,7 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[internal.ids].menu.addEventListener("mouseup", async event => {
+      this[internal.ids].menu.addEventListener("mouseup", async (event) => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
@@ -250,12 +258,12 @@ class MenuButton extends PopupButton {
       // Track changes in the menu's selection state.
       this[internal.ids].menu.addEventListener(
         "selected-index-changed",
-        event => {
+        (event) => {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */
           const cast = event;
           this[internal.setState]({
-            menuSelectedIndex: cast.detail.selectedIndex
+            menuSelectedIndex: cast.detail.selectedIndex,
           });
           this[internal.raiseChangeEvents] = false;
         }
@@ -321,13 +329,13 @@ class MenuButton extends PopupButton {
 
           // Clear previous touchstart point.
           touchStartX: null,
-          touchStartY: null
+          touchStartY: null,
         });
       } else {
         // Closing
         Object.assign(effects, {
           // Clear menu selection.
-          menuSelectedIndex: -1
+          menuSelectedIndex: -1,
         });
       }
     }
@@ -397,7 +405,7 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
       if (element[internal.state].dragSelect) {
         element[internal.raiseChangeEvents] = true;
         element[internal.setState]({
-          dragSelect: false
+          dragSelect: false,
         });
         element[internal.raiseChangeEvents] = false;
       }

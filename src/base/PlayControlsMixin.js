@@ -32,12 +32,16 @@ export default function PlayControlsMixin(Base) {
       return this[internal.state].controlButtonPartType;
     }
     set controlButtonPartType(controlButtonPartType) {
+      /* eslint-disable no-console */
+      console.warn(
+        `Deprecation warning: The public controlButtonPartType property is deprecated and will be removed. Create a subclass and set the controlButtonPartType state member in defaultState instead.`
+      );
       this[internal.setState]({ controlButtonPartType });
     }
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        controlButtonPartType: Button
+        controlButtonPartType: Button,
       });
     }
 
@@ -66,11 +70,11 @@ export default function PlayControlsMixin(Base) {
       renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
       if (changed.controlButtonPartType) {
-        this[internal.ids].previousButton.addEventListener("click", event => {
+        this[internal.ids].previousButton.addEventListener("click", (event) => {
           this.selectPrevious();
           event.stopPropagation();
         });
-        this[internal.ids].playButton.addEventListener("click", event => {
+        this[internal.ids].playButton.addEventListener("click", (event) => {
           if (!this.playing) {
             this.play();
           } else {
@@ -78,7 +82,7 @@ export default function PlayControlsMixin(Base) {
           }
           event.stopPropagation();
         });
-        this[internal.ids].nextButton.addEventListener("click", event => {
+        this[internal.ids].nextButton.addEventListener("click", (event) => {
           this.selectNext();
           event.stopPropagation();
         });
@@ -166,7 +170,7 @@ function renderParts(root, state, changed) {
   if (!changed || changed.controlButtonPartType) {
     const { controlButtonPartType } = state;
     const controlButtons = root.querySelectorAll('[part~="control-button"]');
-    controlButtons.forEach(controlButton =>
+    controlButtons.forEach((controlButton) =>
       template.transmute(controlButton, controlButtonPartType)
     );
   }

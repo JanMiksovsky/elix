@@ -43,7 +43,7 @@ class PopupSource extends Base {
       roomBelow: null,
       roomLeft: null,
       roomRight: null,
-      sourcePartType: "div"
+      sourcePartType: "div",
     });
   }
 
@@ -92,7 +92,7 @@ class PopupSource extends Base {
       });
 
       // Popup's closed state becomes our own closed state.
-      this[internal.ids].popup.addEventListener("closed", event => {
+      this[internal.ids].popup.addEventListener("closed", (event) => {
         if (!this.closed) {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */
@@ -120,7 +120,7 @@ class PopupSource extends Base {
         roomAbove,
         roomBelow,
         roomLeft,
-        roomRight
+        roomRight,
       } = this[internal.state];
 
       const fitsAbove = popupHeight <= roomAbove;
@@ -191,12 +191,12 @@ class PopupSource extends Base {
         left,
         opacity,
         position,
-        right
+        right,
       });
       const frame = /** @type {any} */ (popup).frame;
       Object.assign(frame.style, {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
-        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
+        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null,
       });
       this[internal.ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
@@ -258,6 +258,10 @@ class PopupSource extends Base {
     return this[internal.state].popupPartType;
   }
   set popupPartType(popupPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public popupPartType property is deprecated and will be removed. Create a subclass and set the popupPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ popupPartType });
   }
 
@@ -272,6 +276,10 @@ class PopupSource extends Base {
     return this[internal.state].sourcePartType;
   }
   set sourcePartType(sourcePartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public sourcePartType property is deprecated and will be removed. Create a subclass and set the sourcePartType state member in defaultState instead.`
+    );
     this[internal.setState]({ sourcePartType });
   }
 
@@ -287,7 +295,7 @@ class PopupSource extends Base {
         roomAbove: null,
         roomBelow: null,
         roomLeft: null,
-        roomRight: null
+        roomRight: null,
       });
     }
 
@@ -373,7 +381,7 @@ function measurePopup(element) {
     roomLeft: sourceRect.right,
     roomRight: Math.ceil(windowWidth - sourceRect.left),
     windowHeight,
-    windowWidth
+    windowWidth,
   });
 }
 

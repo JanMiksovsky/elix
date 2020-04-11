@@ -37,7 +37,7 @@ class CalendarDays extends Base {
    */
   dayElementForDate(date) {
     /** @type {Element[]} */ const days = this.days || [];
-    return days.find(day => {
+    return days.find((day) => {
       /** @type {any} */ const cast = day;
       return calendar.datesEqual(cast.date, date);
     });
@@ -61,6 +61,10 @@ class CalendarDays extends Base {
     return this[internal.state].dayPartType;
   }
   set dayPartType(dayPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public dayPartType property is deprecated and will be removed. Create a subclass and set the dayPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ dayPartType });
   }
 
@@ -82,7 +86,7 @@ class CalendarDays extends Base {
       days: null,
       showCompleteWeeks: false,
       showSelectedDay: false,
-      startDate: today
+      startDate: today,
     });
   }
 
@@ -102,7 +106,7 @@ class CalendarDays extends Base {
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
       /** @type {Element[]} */ const days = this.days || [];
-      days.forEach(day => {
+      days.forEach((day) => {
         const dayDate = /** @type {any} */ (day).date;
         const selected =
           showSelectedDay &&
@@ -121,7 +125,7 @@ class CalendarDays extends Base {
       );
       /** @type {any[]} */
       const days = this[internal.state].days || [];
-      days.forEach(day => {
+      days.forEach((day) => {
         if ("outsideRange" in day) {
           const dayDate = day.date;
           const dayTime = dayDate.getTime();
@@ -156,7 +160,7 @@ class CalendarDays extends Base {
       typeof startDate === "string" ? new Date(startDate) : startDate;
     if (!calendar.datesEqual(this[internal.state].startDate, parsed)) {
       this[internal.setState]({
-        startDate: parsed
+        startDate: parsed,
       });
     }
   }

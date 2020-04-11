@@ -56,7 +56,7 @@ class ListWithSearch extends Base {
       filter: "",
       inputPartType: "input",
       listPartType: FilterListBox,
-      placeholder: "Search"
+      placeholder: "Search",
     });
   }
 
@@ -78,6 +78,10 @@ class ListWithSearch extends Base {
     return this[internal.state].inputPartType;
   }
   set inputPartType(inputPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public inputPartType property is deprecated and will be removed. Create a subclass and set the inputPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ inputPartType });
   }
 
@@ -160,6 +164,10 @@ class ListWithSearch extends Base {
     return this[internal.state].listPartType;
   }
   set listPartType(listPartType) {
+    /* eslint-disable no-console */
+    console.warn(
+      `Deprecation warning: The public listPartType property is deprecated and will be removed. Create a subclass and set the listPartType state member in defaultState instead.`
+    );
     this[internal.setState]({ listPartType });
   }
 
@@ -192,9 +200,8 @@ class ListWithSearch extends Base {
 
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[
-        internal.ids
-      ].input).placeholder = placeholder;
+      /** @type {HTMLInputElement} */ (this[internal.ids]
+        .input).placeholder = placeholder;
     }
   }
 
