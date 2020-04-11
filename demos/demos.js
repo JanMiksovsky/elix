@@ -19,6 +19,7 @@ import "./src/SingleSelectionDemo.js";
 import "./src/SlidingPagesWithArrows.js";
 import "./src/SwipeDemo.js";
 import "./src/ToolbarTab.js";
+import "./src/ToolbarTabs.js";
 import "./src/UnitsSpinBox.js";
 
 // We assume we'll want to provide demos of all of Elix itself.

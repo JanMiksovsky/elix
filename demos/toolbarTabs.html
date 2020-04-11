@@ -7,8 +7,7 @@
 
     <link rel="stylesheet" href="demos.css" />
     <script type="module" src="./src/ToolbarTab.js"></script>
-    <script type="module" src="../define/SlidingPages.js"></script>
-    <script type="module" src="../define/Tabs.js"></script>
+    <script type="module" src="./src/ToolbarTabs.js"></script>
 
     <style>
       html {
@@ -28,32 +27,7 @@
         rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
-      <style>
-        .toolbarTabs {
-          background: #eee;
-          color: gray;
-          display: flex;
-          flex: 1;
-        }
-
-        .page {
-          align-items: center;
-          background: white;
-          border: 1px solid rgb(204, 204, 204);
-          box-sizing: border-box;
-          color: initial;
-          display: flex;
-          justify-content: center;
-        }
-      </style>
-
-      <elix-tabs
-        class="toolbarTabs"
-        generic="false"
-        proxy-list-position="bottom"
-        tab-align="stretch"
-        stage-part-type="elix-sliding-pages"
-      >
+      <toolbar-tabs class="toolbarTabs">
         <toolbar-tab slot="proxy" aria-label="Home">
           <div class="material-icons">home</div>
           Home
@@ -69,7 +43,7 @@
         <div class="page">Home page</div>
         <div class="page">Search page</div>
         <div class="page">Settings page</div>
-      </elix-tabs>
+      </toolbar-tabs>
     </div>
   </body>
 </html>
