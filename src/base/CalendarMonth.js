@@ -182,7 +182,7 @@ class CalendarMonth extends Base {
     super[internal.render](changed);
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
-    if (changed.dayPartType || changed.monthYearHeaderPartType) {
+    if (changed.dayPartType) {
       /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
         internal.state
       ].dayPartType;

@@ -11,17 +11,10 @@
       import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
-        get buttonPartType() {
-          return this[internal.state].button;
-        }
-        set buttonPartType(buttonPartType) {
-          this[internal.setState]({ buttonPartType });
-        }
-
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
             buttonPartType: "button",
-            value: 0
+            value: 0,
           });
         }
 
@@ -56,7 +49,7 @@
         }
         set value(value) {
           this[internal.setState]({
-            value: parseInt(value)
+            value: parseInt(value),
           });
         }
 
@@ -90,7 +83,7 @@
       class CustomIncrementDecrement extends IncrementDecrement {
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
-            buttonPartType: CustomButton
+            buttonPartType: CustomButton,
           });
         }
       }
@@ -108,7 +101,6 @@
       styling and custom behavior.
     </p>
     <increment-decrement></increment-decrement>
-    <increment-decrement button-part-type="custom-button"></increment-decrement>
     <custom-increment-decrement></custom-increment-decrement>
   </body>
 </html>

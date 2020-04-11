@@ -11,15 +11,15 @@ import CalendarDay from "../../src/plain/PlainCalendarDay.js";
  * Moon phase icons modified from icons from flaticon.com by Freepik under
  * CC-BY.
  */
-class CalendarDayMoonPhase extends CalendarDay {
+class MoonPhaseCalendarDay extends CalendarDay {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
       template.html`
         <style>
           #phaseIcon {
-            height: 1.5em;
-            width: 1.5em;
+            height: 24px;
+            width: 24px;
           }
           
           #phaseIcon:not([src]) {
@@ -143,5 +143,5 @@ function sind(/** @type {number} */ angle) {
   return Math.sin((angle * Math.PI) / 180.0);
 }
 
-customElements.define("calendar-day-moon-phase", CalendarDayMoonPhase);
-export default CalendarDayMoonPhase;
+customElements.define("moon-phase-calendar-day", MoonPhaseCalendarDay);
+export default MoonPhaseCalendarDay;
