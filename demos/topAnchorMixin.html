@@ -24,8 +24,9 @@
         .headerLink {
           color: inherit;
           font-weight: bold;
+          text-decoration: none;
         }
-        .headerLink.current {
+        .headerLink.selected {
           color: red;
         }
       </style>
@@ -96,7 +97,7 @@
             const topAnchor = event.detail.topAnchor;
             const href = topAnchor ? `#${topAnchor.id}` : null;
             document.querySelectorAll(".headerLink").forEach((link) => {
-              link.classList.toggle("current", link.hash === href);
+              link.classList.toggle("selected", link.hash === href);
             });
           });
       </script>
