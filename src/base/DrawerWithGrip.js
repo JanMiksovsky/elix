@@ -1,3 +1,4 @@
+import * as graft from "../core/graft.js";
 import html from "../core/html.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
@@ -127,9 +128,10 @@ class DrawerWithGrip extends Drawer {
     // The gripWorkaround element exists for Safari, which doesn't correctly
     // measure the grip dimensions when mounted without it. Having a div that's
     // display: block instead of flex appears to be the reason this helps.
-    const defaultSlot = result.content.querySelector("slot:not([name])");
-    if (defaultSlot) {
-      defaultSlot.replaceWith(html`
+    graft.replaceSlot(
+      result.content,
+      "",
+      html`
         <div id="gripContainer">
           <div id="grippedContent">
             <slot></slot>
@@ -140,8 +142,8 @@ class DrawerWithGrip extends Drawer {
             </div>
           </div>
         </div>
-      `);
-    }
+      `
+    );
 
     renderParts(result.content, this[internal.state]);
 

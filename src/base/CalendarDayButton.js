@@ -1,3 +1,4 @@
+import * as graft from "../core/graft.js";
 import html from "../core/html.js";
 import * as template from "../core/template.js";
 import * as calendar from "./calendar.js";
@@ -77,13 +78,10 @@ class CalendarDayButton extends Base {
     const result = super[internal.template];
 
     // Replace default slot with calendar day.
-    const defaultSlot = result.content.querySelector("slot:not([name])");
-    if (defaultSlot) {
-      const dayPartType = this[internal.state].dayPartType;
-      const day = template.createElement(dayPartType);
-      day.id = "day";
-      defaultSlot.replaceWith(day);
-    }
+    const { dayPartType } = this[internal.state];
+    const day = template.createElement(dayPartType);
+    day.id = "day";
+    graft.replaceSlot(result.content, "", day);
 
     // Style outer button.
     result.content.appendChild(

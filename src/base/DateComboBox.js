@@ -1,5 +1,5 @@
+import * as graft from "../core/graft.js";
 import html from "../core/html.js";
-import * as template from "../core/template.js";
 import Button from "./Button.js";
 import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
@@ -512,18 +512,10 @@ class DateComboBox extends Base {
  */
 function renderParts(root, state, changed) {
   if (!changed || changed.calendarPartType) {
-    const { calendarPartType } = state;
-    const calendar = root.getElementById("calendar");
-    if (calendar) {
-      template.transmute(calendar, calendarPartType);
-    }
+    graft.transmutePart(root, "calendar", state.calendarPartType);
   }
   if (!changed || changed.todayButtonPartType) {
-    const { todayButtonPartType } = state;
-    const todayButton = root.getElementById("todayButton");
-    if (todayButton) {
-      template.transmute(todayButton, todayButtonPartType);
-    }
+    graft.transmutePart(root, "today-button", state.todayButtonPartType);
   }
 }
 

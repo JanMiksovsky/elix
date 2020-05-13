@@ -1,5 +1,6 @@
 import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
 import * as internal from "../base/internal.js";
+import * as graft from "../core/graft.js";
 import html from "../core/html.js";
 import PlainDrawer from "./PlainDrawer.js";
 
@@ -21,27 +22,24 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     const result = super[internal.template];
 
     // Fill the menuButton slot with our icon.
-    const menuButtonSlot = result.content.querySelector(
-      'slot[name="menuButton"]'
+    graft.setSlotContent(
+      result.content,
+      "menuButton",
+      html`
+        <slot name="menuIcon">
+          <svg
+            id="menuIcon"
+            part="menu-icon"
+            viewBox="0 0 18 18"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"
+            ></path>
+          </svg>
+        </slot>
+      `
     );
-    if (menuButtonSlot) {
-      menuButtonSlot.append(
-        html`
-          <slot name="menuIcon">
-            <svg
-              id="menuIcon"
-              part="menu-icon"
-              viewBox="0 0 18 18"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"
-              ></path>
-            </svg>
-          </slot>
-        `
-      );
-    }
 
     result.content.append(
       html`
