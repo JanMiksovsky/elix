@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix AutoCompleteComboBox</title>
+
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module">
+      import AutoCompleteComboBox from "../src/plain/PlainAutoCompleteComboBox.js";
+      import {
+        firstRender,
+        ids,
+        inputDelegate,
+        render,
+        state,
+        template,
+      } from "../src/base/internal.js";
+      import { fragmentFrom } from "../src/core/htmlLiterals.js";
+      import { transmute } from "../src/core/template.js";
+
+      class LightComboBox extends AutoCompleteComboBox {
+        // Override [ids].input to reference our light DOM input.
+        get [ids]() {
+          const base = super[ids];
+          const element = this;
+          return new Proxy(this, {
+            get(target, id) {
+              if (id === "input") {
+                return element.querySelector("#input");
+              } else {
+                return base[id];
+              }
+            },
+          });
+        }
+
+        [render](changed) {
+          if (this[firstRender]) {
+            // Create an input in the light DOM.
+            const input = document.createElement("input");
+            input.id = "input";
+            input.slot = "input";
+            input.setAttribute("aria-controls", this.id);
+            this.append(input);
+          }
+
+          // The base ComboBox type will handle inputPartType for us -- but
+          // expects to find the input in the shadow, so it will fail. So we
+          // handle the inputPartType again here, this time in a way that will
+          // find the input in the light DOM. We do this before we call
+          // super so that ComboBox's addEventListener calls will bind to the
+          // newly-transmuted input.
+          if (changed.inputPartType) {
+            const { inputPartType } = this[state];
+            const input = this[ids].input;
+            if (input) {
+              transmute(input, inputPartType);
+            }
+          }
+
+          super[render](changed);
+        }
+
+        get [template]() {
+          const result = super[template];
+
+          // Replace the input with a slot that will pick up the input
+          // we'll add to the light DOM.
+          const input = result.content.querySelector('[part~="input"]');
+          if (input) {
+            input.replaceWith(fragmentFrom.html`
+              <slot name="input"></slot>
+            `);
+          }
+
+          return result;
+        }
+      }
+
+      customElements.define("light-combo-box", LightComboBox);
+    </script>
+  </head>
+
+  <body role="main">
+    <div class="demo padded">
+      Pet:
+      <light-combo-box id="sampleComboBox" aria-label="Pet">
+        <div>Canary</div>
+        <div>Cat</div>
+        <div>Chicken</div>
+        <div>Chinchilla</div>
+        <div>Cockatiel</div>
+        <div>Cricket</div>
+        <div>Dog</div>
+        <div>Ferret</div>
+        <div>Finch</div>
+        <div>Fish</div>
+        <div>Frog</div>
+        <div>Gerbil</div>
+        <div>Guinea Pig</div>
+        <div>Hamster</div>
+        <div>Hermit Crab</div>
+        <div>Lizard</div>
+        <div>Mouse</div>
+        <div>Parakeet</div>
+        <div>Parrot</div>
+        <div>Pig</div>
+        <div>Rabbit</div>
+        <div>Rat</div>
+        <div>Snail</div>
+        <div>Snake</div>
+        <div>Spider</div>
+        <div>Turtle</div>
+      </light-combo-box>
+    </div>
+  </body>
+</html>
