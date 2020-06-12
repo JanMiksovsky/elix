@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix DropdownList</title>
+
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Option.js"></script>
+    <script type="module">
+      import DropdownList from "../src/plain/PlainDropdownList.js";
+      import Menu from "../src/plain/PlainMenu.js";
+      import {
+        defaultState,
+        firstRender,
+        ids,
+        inputDelegate,
+        raiseChangeEvents,
+        render,
+        setState,
+        shadowRoot,
+        state,
+        template,
+      } from "../src/base/internal.js";
+      import { fragmentFrom } from "../src/core/htmlLiterals.js";
+      import { transmute } from "../src/core/template.js";
+
+      class LightComboBox extends DropdownList {
+        get [defaultState]() {
+          return Object.assign(super[defaultState], {
+            itemRole: "option",
+          });
+        }
+
+        // Override [ids].input to reference our light DOM input.
+        get [ids]() {
+          const base = super[ids];
+          const element = this;
+          return new Proxy(this, {
+            get(target, id) {
+              if (id === "menu") {
+                return element.querySelector("#menu");
+              } else if (id === "value") {
+                return element.querySelector("#value");
+              } else {
+                return base[id];
+              }
+            },
+          });
+        }
+
+        [render](changed) {
+          super[render](changed);
+
+          if (this[firstRender]) {
+            // Listen to changes in the menu slot.
+            const menuSlot = this[shadowRoot].querySelector(
+              'slot[name="menu"]'
+            );
+            if (menuSlot) {
+              menuSlot.addEventListener("slotchange", async () => {
+                // Although slotchange isn't generally a user-driven event, it's
+                // impossible for us to know whether a change in slot content is going
+                // to result in effects that the host of this element can predict.
+                // To be on the safe side, we raise any change events that come up
+                // during the processing of this event.
+                this[raiseChangeEvents] = true;
+
+                // The nodes assigned to the given component have changed.
+                // Update the component's state to reflect the new content.
+                const menu = menuSlot.assignedNodes({ flatten: true })[0];
+                const content = [...menu.childNodes];
+                Object.freeze(content);
+                this[setState]({ content });
+
+                await Promise.resolve();
+                this[raiseChangeEvents] = false;
+              });
+            }
+          }
+
+          // Override AriaListMixin
+          if (changed.items || changed.selectedIndex) {
+            this.setAttribute("aria-activedescendant", "value");
+          }
+        }
+
+        get [template]() {
+          const result = super[template];
+
+          // Replace the value part with a slot.
+          const value = result.content.querySelector("[part~=value]");
+          if (value) {
+            value.replaceWith(fragmentFrom.html`
+              <slot name="value"></slot>
+            `);
+          }
+
+          // Replace the menu part with a slot.
+          const menu = result.content.querySelector('[part~="menu"]');
+          if (menu) {
+            menu.replaceWith(fragmentFrom.html`
+              <slot name="menu"></slot>
+            `);
+          }
+
+          return result;
+        }
+      }
+
+      class MenuList extends Menu {
+        get [defaultState]() {
+          return Object.assign(super[defaultState], {
+            itemRole: "option",
+            role: "listbox",
+          });
+        }
+      }
+
+      customElements.define("light-dropdown-list", LightComboBox);
+      customElements.define("menu-list", MenuList);
+    </script>
+  </head>
+
+  <body role="main">
+    <div class="demo padded">
+      <label id="skillLabel">Skill level:</label>
+      <light-dropdown-list
+        id="skillDropdown"
+        aria-labelledby="skillLabel skillDropdown"
+        aria-haspopup="listbox"
+        aria-controls="menu"
+        role="combobox"
+      >
+        <div id="value" slot="value"></div>
+        <menu-list id="menu" slot="menu">
+          <elix-option value="beginner">Beginner</elix-option>
+          <elix-option value="intermediate">Intermediate</elix-option>
+          <elix-option value="expert">Expert</elix-option>
+        </menu-list>
+      </light-dropdown-list>
+    </div>
+  </body>
+</html>
