@@ -6,6 +6,7 @@
     <title>Elix DropdownList</title>
 
     <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/ListBox.js"></script>
     <script type="module" src="../define/Option.js"></script>
     <script type="module">
       import DropdownList from "../src/plain/PlainDropdownList.js";
@@ -127,17 +128,18 @@
       <label id="skillLabel">Skill level:</label>
       <light-dropdown-list
         id="skillDropdown"
-        aria-labelledby="skillLabel skillDropdown"
+        aria-autocomplete="none"
+        aria-labelledby="skillLabel value"
         aria-haspopup="listbox"
         aria-controls="menu"
         role="combobox"
       >
         <div id="value" slot="value"></div>
-        <menu-list id="menu" slot="menu">
+        <elix-list-box id="menu" slot="menu">
           <elix-option value="beginner">Beginner</elix-option>
           <elix-option value="intermediate">Intermediate</elix-option>
           <elix-option value="expert">Expert</elix-option>
-        </menu-list>
+        </elix-list-box>
       </light-dropdown-list>
     </div>
   </body>
