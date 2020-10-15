@@ -181,6 +181,11 @@ class PopupSource extends Base {
             position: "",
             right: "",
           });
+          const frame = /** @type {any} */ (this[ids].popup).frame;
+          Object.assign(frame.style, {
+            maxHeight: "",
+            maxWidth: "",
+          });
         }
       } else if (!popupMeasured) {
         // If the popup is opened but has not yet been measured, we want to
@@ -359,9 +364,10 @@ class PopupSource extends Base {
 function addEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   cast[resizeListenerKey] = () => {
-    measurePopup(element);
+    // measurePopup(element);
+    element[setState]({ popupMeasured: false });
   };
-  window.addEventListener("resize", cast[resizeListenerKey]);
+  window.visualViewport.addEventListener("resize", cast[resizeListenerKey]);
 }
 
 /**
@@ -372,8 +378,10 @@ function addEventListeners(/** @type {PopupSource} */ element) {
  * @param {PopupSource} element
  */
 function measurePopup(element) {
-  const windowHeight = window.innerHeight;
-  const windowWidth = window.innerWidth;
+  // const windowHeight = window.innerHeight;
+  // const windowWidth = window.innerWidth;
+  const windowHeight = window.visualViewport.height;
+  const windowWidth = window.visualViewport.width;
   const popupRect = element[ids].popup.getBoundingClientRect();
   const sourceRect = element.getBoundingClientRect();
 
@@ -454,7 +462,10 @@ function measurePopup(element) {
 function removeEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   if (cast[resizeListenerKey]) {
-    window.removeEventListener("resize", cast[resizeListenerKey]);
+    window.visualViewport.removeEventListener(
+      "resize",
+      cast[resizeListenerKey]
+    );
     cast[resizeListenerKey] = null;
   }
 }
