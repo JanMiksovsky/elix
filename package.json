@@ -10,6 +10,7 @@
   "author": "info@component.kitchen",
   "main": "./src/elix.js",
   "module": "./src/elix.js",
+  "type": "module",
   "types": "./src/elix.d.ts",
   "keywords": [
     "web components",
@@ -51,6 +52,7 @@
     "prepublishOnly": "node tasks/prepublishOnly.js",
     "sauce-tests": "node tasks/sauceTests.js",
     "test": "node tasks/headless-tests.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "build": "node node_modules/arrow/src/cli.js tasks"
   }
 }
