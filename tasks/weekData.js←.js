@@ -1,6 +1,4 @@
-const fetch = require("node-fetch");
-const fs = require("fs").promises;
-const path = require("path");
+import fetch from "node-fetch";
 
 // The cldr-json week data uses English days of week, but we'd rather have
 // a numeric representation.
@@ -16,13 +14,6 @@ const daysOfWeek = {
 
 const weekDataUrl =
   "https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/weekData.json";
-
-async function createWeekData(targetFolder) {
-  const weekData = await getWeekData();
-  const weekSource = formatWeekDataAsModule(weekData);
-  const weekFile = path.join(targetFolder, "weekData.js");
-  await fs.writeFile(weekFile, weekSource);
-}
 
 // Extract the week data we care about and format it as an ES6 module.
 function formatWeekDataAsModule(weekData) {
@@ -51,11 +42,9 @@ function transformWeekDays(data) {
 
 // Get data from cldr-json project
 // at https://github.com/unicode-cldr/cldr-core.
-async function getWeekData() {
+export default async function weekData() {
   const response = await fetch(weekDataUrl);
   const json = await response.json();
-  return json.supplemental.weekData;
+  const data = json.supplemental.weekData;
+  return formatWeekDataAsModule(data);
 }
-
-// @ts-ignore
-module.exports = createWeekData;

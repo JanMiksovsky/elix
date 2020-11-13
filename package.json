@@ -53,6 +53,7 @@
     "sauce-tests": "node tasks/sauceTests.js",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
-    "build": "node node_modules/arrow/src/cli.js tasks"
+    "build": "node node_modules/arrow/src/cli.js tasks",
+    "clean": "node node_modules/arrow/src/cli.js --clean tasks"
   }
 }
