@@ -128,9 +128,10 @@ class Overlay extends Base {
     result.content.append(fragmentFrom.html`
       <style>
         :host {
-          display: inline-grid;
+          display: grid;
+          /* display: inline-grid; */
           /* Constrain content if overlay's height is constrained. */
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+          /* grid-template: minmax(0, 1fr) / minmax(0, 1fr); */
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
@@ -140,16 +141,23 @@ class Overlay extends Base {
 
         [part~="frame"] {
           box-sizing: border-box;
-          display: grid;
+          /* display: grid; */
+          display: block;
+          height: 100%;
+          overflow: hidden;
           overscroll-behavior: contain;
           pointer-events: initial;
           position: relative;
+          width: 100%;
         }
 
         #frameContent {
-          display: grid;
-          grid-template: minmax(0, 1fr) / minmax(0, 1fr);
-          overflow: hidden;
+          display: block;
+          height: 100%;
+          width: 100%;
+          /* display: grid; */
+          /* grid-template: minmax(0, 1fr) / minmax(0, 1fr); */
+          /* overflow: hidden; */
         }
       </style>
       <div id="backdrop" part="backdrop" tabindex="-1"></div>
