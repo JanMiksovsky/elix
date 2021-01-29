@@ -128,7 +128,8 @@ class Overlay extends Base {
     result.content.append(fragmentFrom.html`
       <style>
         :host {
-          display: grid;
+          display: block;
+          /* display: grid; */
           /* display: inline-grid; */
           /* Constrain content if overlay's height is constrained. */
           /* grid-template: minmax(0, 1fr) / minmax(0, 1fr); */
