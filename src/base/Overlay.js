@@ -124,15 +124,17 @@ class Overlay extends Base {
   get [template]() {
     const result = super[template];
 
-    // TODO: Consider moving frameContent div to Drawer.
+    // We'd really like to use a grid here to deliver size-to-content and
+    // expand-to-container sizing here. However, we also want to apply
+    // `overflow: hidden` to the frame for use in a popup source like
+    // ListComboBox with a popup that needs to scroll. THe presence of
+    // `overflow` will cause a grid at the viewport's right edge to *not* size
+    // to content as expected, which will throw off our popup layout heuristics
+    // because they can't get the real intrinsic size of the popup.
     result.content.append(fragmentFrom.html`
       <style>
         :host {
           display: block;
-          /* display: grid; */
-          /* display: inline-grid; */
-          /* Constrain content if overlay's height is constrained. */
-          /* grid-template: minmax(0, 1fr) / minmax(0, 1fr); */
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
@@ -142,7 +144,6 @@ class Overlay extends Base {
 
         [part~="frame"] {
           box-sizing: border-box;
-          /* display: grid; */
           display: block;
           height: 100%;
           overflow: hidden;
@@ -152,20 +153,17 @@ class Overlay extends Base {
           width: 100%;
         }
 
-        #frameContent {
+        /* Move to Drawer. */
+        /* #frameContent {
           display: block;
-          height: 100%;
-          width: 100%;
-          /* display: grid; */
-          /* grid-template: minmax(0, 1fr) / minmax(0, 1fr); */
-          /* overflow: hidden; */
-        }
+          max-height: 100%;
+          max-width: 100%;
+          overflow: hidden;
+        } */
       </style>
       <div id="backdrop" part="backdrop" tabindex="-1"></div>
       <div id="frame" part="frame" role="none">
-        <div id="frameContent">
-          <slot></slot>
-        </div>
+        <slot></slot>
       </div>
     `);
 
