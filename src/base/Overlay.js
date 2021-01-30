@@ -134,7 +134,8 @@ class Overlay extends Base {
     result.content.append(fragmentFrom.html`
       <style>
         :host {
-          display: block;
+          display: grid;
+          grid-template: minmax(0, max-content) / minmax(0, max-content);
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
@@ -145,12 +146,11 @@ class Overlay extends Base {
         [part~="frame"] {
           box-sizing: border-box;
           display: block;
-          height: 100%;
+          display: grid;
           overflow: hidden;
           overscroll-behavior: contain;
           pointer-events: initial;
           position: relative;
-          width: 100%;
         }
 
         /* Move to Drawer. */
